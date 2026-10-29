@@ -1,5 +1,6 @@
 ---
 import { languages, type Lang } from '../../i18n';
+import { withBase } from '../../lib/paths';
 
 interface Props {
   current: Lang;
@@ -15,7 +16,7 @@ const { current, label } = Astro.props;
       languages.map((l) => (
         <li>
           <a
-            href={l.href}
+            href={withBase(l.href)}
             hreflang={l.code === 'pt' ? 'pt-BR' : l.code}
             lang={l.code === 'pt' ? 'pt-BR' : l.code}
             aria-current={l.code === current ? 'true' : undefined}

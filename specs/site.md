@@ -90,7 +90,7 @@ Os textos de cada seção estão em `specs/textos.md`.
   - Por quê: suporta i18n nativo (PT/EN/ES com URLs próprias), facilita criar novas páginas no futuro, gera HTML puro e rápido e não depende de servidor.
   - Alternativa mais simples: HTML + CSS + JS puro, mas com mais trabalho manual para idiomas e páginas futuras.
 - Fontes self-hosted (Archivo / Instrument Serif), via Fontsource ou arquivos locais.
-- Hospedagem: [PENDENTE] Vercel ou Netlify (plano gratuito atende).
+- Hospedagem: **GitHub Pages**, a partir do repositório `J-Created/HOME`, com deploy automático por GitHub Actions (`.github/workflows/deploy.yml`) a cada envio para a `main`. Endereço: `https://j-created.github.io/HOME/`. O `astro.config.mjs` usa `base: '/HOME/'`, e os links internos passam por `withBase()` (`src/lib/paths.ts`). Com domínio próprio, remover o `base`.
 - Depois de aprovada, a stack só muda com autorização.
 
 ## 11. Responsividade

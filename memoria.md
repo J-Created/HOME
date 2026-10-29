@@ -26,6 +26,9 @@
 - 2026-10-29 — **Textos PT** de todas as seções aprovados (`specs/textos.md`).
 - 2026-10-29 — **Stack:** Astro (site estático, i18n nativo, pronto para novas páginas). Só muda com autorização.
 - 2026-10-29 — **Atualização autorizada:** Astro 5.18.2 → 7.4.4, para eliminar as vulnerabilidades do `npm audit`.
+- 2026-10-29 — **Repositório:** `https://github.com/J-Created/HOME` (branch `main`), **público** por decisão do João. O `index.html` antigo do repositório foi substituído pelo projeto Astro e continua no histórico (commit `b59d7f5`).
+
+- 2026-10-29 — **Hospedagem:** GitHub Pages via GitHub Actions (Settings → Pages → Source → GitHub Actions), no endereço `https://j-created.github.io/HOME/`.
 
 ## Decisões rejeitadas
 - 2026-10-29 — **Tráfego pago** fora do portfólio inicial.
@@ -70,6 +73,11 @@
 
 - 2026-10-29 — Migração para o Astro 7.4.4: `npm audit` com 0 vulnerabilidades. Nenhuma mudança de código foi necessária. Só o caminho do executável mudou (`node_modules/astro/bin/astro.mjs`), e o `.claude/launch.json` foi ajustado. Build, visual, idiomas, menu, formulário e fontes foram conferidos. Lighthouse continua com 100 nas 4 categorias em PT, EN e ES.
 
+- 2026-10-29 — Git 2.56 portátil instalado sem admin em `%LOCALAPPDATA%\Programs\Git`, com o hash verificado e o Git Credential Manager incluído. Primeiro envio feito (`94591ba`).
+
+- 2026-10-29 — O primeiro build do Pages falhou porque ele estava no modo "deploy from branch" (Jekyll), que não compila o Astro. A solução foi o workflow de Actions mais o `base: '/HOME/'`.
+- 2026-10-29 — `npm ci` com o servidor de desenvolvimento rodando falha no Windows (EPERM em arquivo travado). Pare o servidor antes de reinstalar dependências.
+
 ## Pendências
 - [ ] Confirmar o nome exato da fonte de display no PSD.
 - [ ] Arquivos SVG da logo (símbolo e assinatura completa).
@@ -83,7 +91,7 @@
 - [ ] Site de referência externo (print + link), se ainda existir.
 
 ## Próximos passos
-0. Antes de publicar: revisar EN/ES, trocar a logo provisória pelos SVGs oficiais, remover a página `/design-system`, definir o domínio (hoje `example.com` no `astro.config.mjs`) e a hospedagem.
+0. Antes de publicar: revisar EN/ES, trocar a logo provisória pelos SVGs oficiais, remover a página `/design-system`, e, se quiser, ligar um domínio próprio ao GitHub Pages (removendo o `base`).
 1. Confirmar o nome exato da fonte de display no PSD.
 2. Preencher os [CONFIRMAR] de `specs/textos.md` (tipos de vídeo, entregas de design, exemplos de IA, papéis de João e Júlia).
 3. Apresentar o plano de desenvolvimento em Astro e, com a aprovação, iniciar.

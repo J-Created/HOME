@@ -5,6 +5,7 @@ import LanguageSwitcher from './LanguageSwitcher.astro';
 import type { Content } from '../../i18n/pt';
 import type { Lang } from '../../i18n';
 import { whatsappUrl } from '../../lib/whatsapp';
+import { withBase } from '../../lib/paths';
 
 interface Props {
   content: Content;
@@ -12,7 +13,7 @@ interface Props {
 }
 
 const { content, lang } = Astro.props;
-const home = lang === 'pt' ? '/' : `/${lang}/`;
+const home = withBase(lang === 'pt' ? '/' : `/${lang}/`);
 const wa = whatsappUrl(content.whatsapp.message);
 ---
 

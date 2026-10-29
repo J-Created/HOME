@@ -1,6 +1,7 @@
 ---
 import '../styles/global.css';
 import { languages } from '../i18n';
+import { withBase } from '../lib/paths';
 
 interface Props {
   title: string;
@@ -12,6 +13,7 @@ interface Props {
 
 const { title, description, htmlLang = 'pt-BR', noindex = false, restoreLang = false } = Astro.props;
 const site = Astro.site ?? new URL('https://example.com');
+const base = withBase('/');
 ---
 
 <!doctype html>
@@ -22,26 +24,26 @@ const site = Astro.site ?? new URL('https://example.com');
     <title>{title}</title>
     <meta name="description" content={description} />
     <meta name="theme-color" content="#0E1A2E" />
-    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="icon" href={withBase('/favicon.svg')} type="image/svg+xml" />
     {noindex && <meta name="robots" content="noindex, nofollow" />}
     {
       !noindex &&
         languages.map((l) => (
-          <link rel="alternate" hreflang={l.code === 'pt' ? 'pt-BR' : l.code} href={new URL(l.href, site).href} />
+          <link rel="alternate" hreflang={l.code === 'pt' ? 'pt-BR' : l.code} href={new URL(withBase(l.href), site).href} />
         ))
     }
-    {!noindex && <link rel="alternate" hreflang="x-default" href={new URL('/', site).href} />}
+    {!noindex && <link rel="alternate" hreflang="x-default" href={new URL(base, site).href} />}
     <meta property="og:type" content="website" />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <slot name="head" />
     {
       restoreLang && (
-        <script is:inline>
+        <script is:inline define:vars={{ base }}>
           // Respeita o idioma escolhido anteriormente pelo visitante
           try {
             var saved = localStorage.getItem('jc-lang');
-            if (saved === 'en' || saved === 'es') location.replace('/' + saved + '/');
+            if (saved === 'en' || saved === 'es') location.replace(base + saved + '/');
           } catch (e) {}
         </script>
       )
