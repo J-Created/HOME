@@ -100,7 +100,7 @@ Os textos de cada seção estão em `specs/textos.md`.
 - Títulos gigantes com tamanho fluido (`clamp`). No celular, o empilhamento "Filmmaker. Site. Design." continua legível, sem cortar palavras.
 - Botão flutuante do WhatsApp só no celular, sem cobrir conteúdo nem o formulário.
 - Áreas de toque de no mínimo 44×44 px.
-- Menu compacto (hambúrguer) abaixo de 768 px, com o seletor de idioma acessível.
+- Menu compacto (hambúrguer) abaixo de 1200 px, com o seletor de idioma acessível. Antes era 768 px; foi ajustado porque o menu completo, o seletor e o botão não cabem entre 768 e 1199 px.
 
 ## 12. Acessibilidade
 - Meta: WCAG 2.2 nível AA.

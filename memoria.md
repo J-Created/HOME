@@ -78,6 +78,8 @@
 - 2026-10-29 — O primeiro build do Pages falhou porque ele estava no modo "deploy from branch" (Jekyll), que não compila o Astro. A solução foi o workflow de Actions mais o `base: '/HOME/'`.
 - 2026-10-29 — `npm ci` com o servidor de desenvolvimento rodando falha no Windows (EPERM em arquivo travado). Pare o servidor antes de reinstalar dependências.
 
+- 2026-10-29 — No site publicado, em 1024 px o "Quem somos" quebrava em duas linhas no menu. O menu completo passou a aparecer só a partir de 1200 px; abaixo disso, entra o hambúrguer, e o botão flutuante do WhatsApp acompanha.
+
 ## Pendências
 - [ ] Confirmar o nome exato da fonte de display no PSD.
 - [ ] Arquivos SVG da logo (símbolo e assinatura completa).

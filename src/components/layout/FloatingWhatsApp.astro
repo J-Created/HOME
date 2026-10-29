@@ -1,5 +1,5 @@
 ---
-// Botão flutuante do WhatsApp — só no celular/tablet (specs/design.md §12)
+// Botão flutuante do WhatsApp — abaixo de 1200px, quando o cabeçalho não mostra o botão (specs/design.md §12)
 import type { Content } from '../../i18n/pt';
 import { whatsappUrl } from '../../lib/whatsapp';
 
@@ -92,7 +92,7 @@ const { whatsapp } = Astro.props.content;
     transform: translateY(12px) scale(0.9);
   }
 
-  @media (min-width: 1024px) {
+  @media (min-width: 1200px) {
     .fab {
       display: none;
     }

@@ -106,7 +106,7 @@ const wa = whatsappUrl(content.whatsapp.message);
       }
     });
 
-    window.matchMedia('(min-width: 1024px)').addEventListener('change', (e) => {
+    window.matchMedia('(min-width: 1200px)').addEventListener('change', (e) => {
       if (e.matches) setOpen(false);
     });
   }
@@ -255,7 +255,8 @@ const wa = whatsappUrl(content.whatsapp.message);
     justify-items: start;
   }
 
-  @media (min-width: 1024px) {
+  /* Menu completo só a partir de 1200px; abaixo disso, menu hambúrguer */
+  @media (min-width: 1200px) {
     .header-nav,
     .header-actions {
       display: flex;
@@ -265,18 +266,12 @@ const wa = whatsappUrl(content.whatsapp.message);
       margin-inline: auto;
     }
 
+    .header-nav a {
+      white-space: nowrap;
+    }
+
     .menu-toggle {
       display: none;
-    }
-  }
-
-  @media (min-width: 1024px) and (max-width: 1199px) {
-    .header-nav ul {
-      gap: var(--s-5);
-    }
-
-    .header-actions :global(.header-cta) {
-      padding-inline: var(--s-5);
     }
   }
 </style>
