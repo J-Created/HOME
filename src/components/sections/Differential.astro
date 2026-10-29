@@ -1,0 +1,95 @@
+---
+import Section from '../ui/Section.astro';
+import Glow from '../ui/Glow.astro';
+import type { Content } from '../../i18n/pt';
+
+interface Props {
+  content: Content;
+}
+
+const { differential } = Astro.props.content;
+---
+
+<Section id="diferencial" tone="night" labelledby="diferencial-title">
+  <Glow slot="background" position="bottom-left" size="md" />
+
+  <div class="diff-head" data-reveal>
+    <p class="eyebrow">{differential.eyebrow}</p>
+    <h2 id="diferencial-title" class="section-title">
+      {differential.title} <span class="serif">{differential.titleSerif}</span>
+    </h2>
+    <p class="lead diff-text">{differential.text}</p>
+  </div>
+
+  <ul class="diff-pillars">
+    {
+      differential.pillars.map((pillar) => (
+        <li class="diff-pillar" data-reveal>
+          <h3>{pillar.title}</h3>
+          <p>{pillar.text}</p>
+        </li>
+      ))
+    }
+  </ul>
+
+  <p class="diff-closing serif" data-reveal>{differential.closing}</p>
+</Section>
+
+<style>
+  .diff-head {
+    display: grid;
+    gap: var(--s-4);
+  }
+
+  .diff-head :global(.section-title) {
+    max-width: 14ch;
+  }
+
+  .diff-head :global(.section-title .serif) {
+    color: var(--c-blue-300);
+  }
+
+  .diff-text {
+    margin-top: var(--s-3);
+    color: var(--c-white-70);
+    max-width: 52ch;
+  }
+
+  .diff-pillars {
+    display: grid;
+    gap: var(--s-6);
+    margin: var(--s-8) 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .diff-pillar {
+    display: grid;
+    gap: var(--s-3);
+    padding-top: var(--s-5);
+    border-top: 1px solid var(--c-line);
+  }
+
+  .diff-pillar h3 {
+    font-size: var(--fs-h3);
+    font-weight: 700;
+  }
+
+  .diff-pillar p {
+    color: var(--c-white-70);
+  }
+
+  .diff-closing {
+    margin-top: var(--s-9);
+    max-width: none;
+    font-size: var(--fs-serif);
+    line-height: 1.1;
+    text-align: right;
+  }
+
+  @media (min-width: 768px) {
+    .diff-pillars {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+</style>

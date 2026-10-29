@@ -1,0 +1,69 @@
+---
+import Section from '../ui/Section.astro';
+import Logo from '../brand/Logo.astro';
+import type { Content } from '../../i18n/pt';
+
+interface Props {
+  content: Content;
+}
+
+const { about } = Astro.props.content;
+---
+
+<Section id="quem-somos" tone="light" labelledby="quem-somos-title">
+  <div class="about">
+    <div class="about-copy" data-reveal>
+      <p class="eyebrow">{about.eyebrow}</p>
+      <h2 id="quem-somos-title" class="section-title">
+        {about.title} <span class="serif">{about.titleSerif}</span>
+      </h2>
+      <div class="about-text">
+        {about.paragraphs.map((p) => <p>{p}</p>)}
+      </div>
+    </div>
+
+    <!-- [PENDENTE] Foto de João e Júlia. Até lá, o símbolo da marca ocupa o espaço. -->
+    <div class="about-visual" data-reveal aria-hidden="true">
+      <Logo variant="symbol" tone="dark" class="about-symbol" />
+    </div>
+  </div>
+</Section>
+
+<style>
+  .about {
+    display: grid;
+    gap: var(--s-8);
+    align-items: center;
+  }
+
+  .about-copy {
+    display: grid;
+    gap: var(--s-4);
+  }
+
+  .about-text {
+    display: grid;
+    gap: var(--s-4);
+    margin-top: var(--s-4);
+    color: var(--c-ink-70);
+  }
+
+  .about-visual {
+    display: grid;
+    place-items: center;
+    aspect-ratio: 1;
+    border-radius: var(--r-lg);
+    background: var(--c-blue-50);
+  }
+
+  .about-visual :global(.about-symbol) {
+    width: 56%;
+  }
+
+  @media (min-width: 1024px) {
+    .about {
+      grid-template-columns: 1.1fr 1fr;
+      gap: var(--s-9);
+    }
+  }
+</style>

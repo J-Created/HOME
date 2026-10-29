@@ -1,0 +1,114 @@
+---
+import Container from '../ui/Container.astro';
+import Logo from '../brand/Logo.astro';
+import LanguageSwitcher from './LanguageSwitcher.astro';
+import type { Content } from '../../i18n/pt';
+import type { Lang } from '../../i18n';
+import { whatsappUrl } from '../../lib/whatsapp';
+
+interface Props {
+  content: Content;
+  lang: Lang;
+}
+
+const { content, lang } = Astro.props;
+const { footer, whatsapp } = content;
+---
+
+<footer class="footer">
+  <Container>
+    <div class="footer-top">
+      <div class="footer-brand">
+        <Logo tone="light" class="footer-logo" />
+        <p class="footer-slogan serif">{footer.slogan}</p>
+      </div>
+
+      <div class="footer-info">
+        <a class="footer-phone" href={whatsappUrl(whatsapp.message)} target="_blank" rel="noopener noreferrer" aria-label={`${whatsapp.cta}: ${footer.phone} (${content.ui.newTab})`}>
+          {footer.phone}
+        </a>
+        <p>{footer.area}</p>
+        <!-- [PENDENTE] Redes sociais -->
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <p>{footer.rights}</p>
+      <LanguageSwitcher current={lang} label={content.ui.language} />
+    </div>
+  </Container>
+</footer>
+
+<style>
+  .footer {
+    padding-block: var(--s-9) var(--s-6);
+    background: var(--c-night);
+    color: var(--c-white);
+    border-top: 1px solid var(--c-line);
+  }
+
+  .footer-top {
+    display: grid;
+    gap: var(--s-7);
+  }
+
+  .footer-brand {
+    display: grid;
+    gap: var(--s-4);
+  }
+
+  .footer-brand :global(.footer-logo) {
+    width: 168px;
+  }
+
+  .footer-slogan {
+    font-size: clamp(1.5rem, 3vw, 2.25rem);
+    line-height: 1.1;
+    color: var(--c-blue-300);
+  }
+
+  .footer-info {
+    display: grid;
+    gap: var(--s-2);
+    color: var(--c-white-70);
+    font-size: var(--fs-small);
+  }
+
+  .footer-phone {
+    width: fit-content;
+    font-size: var(--fs-h3);
+    font-weight: 700;
+    color: var(--c-white);
+    text-decoration: none;
+  }
+
+  .footer-phone:hover {
+    text-decoration: underline;
+    text-underline-offset: 4px;
+  }
+
+  .footer-bottom {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--s-4);
+    margin-top: var(--s-8);
+    padding-top: var(--s-5);
+    border-top: 1px solid var(--c-line);
+    font-size: var(--fs-small);
+    color: var(--c-white-70);
+  }
+
+  @media (min-width: 768px) {
+    .footer-top {
+      grid-template-columns: 1fr auto;
+      align-items: end;
+    }
+
+    .footer-info {
+      text-align: right;
+      justify-items: end;
+    }
+  }
+</style>

@@ -1,0 +1,281 @@
+---
+import Logo from '../brand/Logo.astro';
+import Button from '../ui/Button.astro';
+import LanguageSwitcher from './LanguageSwitcher.astro';
+import type { Content } from '../../i18n/pt';
+import type { Lang } from '../../i18n';
+import { whatsappUrl } from '../../lib/whatsapp';
+
+interface Props {
+  content: Content;
+  lang: Lang;
+}
+
+const { content, lang } = Astro.props;
+const home = lang === 'pt' ? '/' : `/${lang}/`;
+const wa = whatsappUrl(content.whatsapp.message);
+---
+
+<header class="header" data-header>
+  <div class="header-inner">
+    <a class="header-logo" href={home} aria-label={content.ui.home}>
+      <Logo tone="light" />
+    </a>
+
+    <nav class="header-nav" aria-label={content.ui.nav}>
+      <ul>
+        {
+          content.nav.map((item) => (
+            <li>
+              <a href={item.href}>{item.label}</a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+
+    <div class="header-actions">
+      <LanguageSwitcher current={lang} label={content.ui.language} />
+      <Button href={wa} variant="inverse" icon="whatsapp" external ariaLabel={content.whatsapp.ctaLabel} class="header-cta">
+        {content.whatsapp.cta}
+      </Button>
+    </div>
+
+    <button
+      class="menu-toggle"
+      type="button"
+      aria-expanded="false"
+      aria-controls="mobile-menu"
+      data-open-label={content.ui.menuOpen}
+      data-close-label={content.ui.menuClose}
+      aria-label={content.ui.menuOpen}
+    >
+      <span class="menu-bar"></span>
+      <span class="menu-bar"></span>
+    </button>
+  </div>
+
+  <div class="mobile-menu" id="mobile-menu" hidden>
+    <nav aria-label={content.ui.nav}>
+      <ul class="mobile-links">
+        {
+          content.nav.map((item) => (
+            <li>
+              <a href={item.href}>{item.label}</a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+    <div class="mobile-footer">
+      <LanguageSwitcher current={lang} label={content.ui.language} />
+      <Button href={wa} variant="inverse" icon="whatsapp" external ariaLabel={content.whatsapp.ctaLabel}>
+        {content.whatsapp.cta}
+      </Button>
+    </div>
+  </div>
+</header>
+
+<script>
+  const header = document.querySelector<HTMLElement>('[data-header]');
+  const toggle = header?.querySelector<HTMLButtonElement>('.menu-toggle');
+  const menu = header?.querySelector<HTMLElement>('#mobile-menu');
+
+  if (header && toggle && menu) {
+    const onScroll = () => header.classList.toggle('is-scrolled', window.scrollY > 24);
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+
+    const setOpen = (open: boolean) => {
+      toggle.setAttribute('aria-expanded', String(open));
+      toggle.setAttribute('aria-label', (open ? toggle.dataset.closeLabel : toggle.dataset.openLabel) ?? '');
+      menu.hidden = !open;
+      header.classList.toggle('menu-open', open);
+      document.body.style.overflow = open ? 'hidden' : '';
+    };
+
+    toggle.addEventListener('click', () => setOpen(toggle.getAttribute('aria-expanded') !== 'true'));
+
+    menu.querySelectorAll('a[href^="#"]').forEach((link) => link.addEventListener('click', () => setOpen(false)));
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && toggle.getAttribute('aria-expanded') === 'true') {
+        setOpen(false);
+        toggle.focus();
+      }
+    });
+
+    window.matchMedia('(min-width: 1024px)').addEventListener('change', (e) => {
+      if (e.matches) setOpen(false);
+    });
+  }
+</script>
+
+<style>
+  .header {
+    position: fixed;
+    inset: 0 0 auto;
+    z-index: 50;
+    color: var(--c-white);
+    transition:
+      background-color var(--t-reveal) var(--ease-out),
+      border-color var(--t-reveal) var(--ease-out);
+    border-bottom: 1px solid transparent;
+  }
+
+  .header.is-scrolled {
+    background: rgb(14 26 46 / 0.82);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border-bottom-color: var(--c-line);
+  }
+
+  .header.menu-open {
+    background: var(--c-night);
+    border-bottom-color: var(--c-line);
+  }
+
+  .header-inner {
+    display: flex;
+    align-items: center;
+    gap: var(--s-6);
+    max-width: calc(var(--container) + var(--gutter) * 2);
+    height: var(--header-h);
+    margin-inline: auto;
+    padding-inline: var(--gutter);
+  }
+
+  .header-logo {
+    flex-shrink: 0;
+    border-radius: var(--r-sm);
+  }
+
+  .header-logo :global(.logo) {
+    width: 132px;
+  }
+
+  .header-nav {
+    display: none;
+    margin-inline: auto;
+  }
+
+  .header-nav ul {
+    display: flex;
+    gap: var(--s-6);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .header-nav a {
+    font-size: 0.9375rem;
+    font-weight: 500;
+    text-decoration: none;
+    color: var(--c-white-70);
+    transition: color var(--t-fast) var(--ease-out);
+  }
+
+  .header-nav a:hover {
+    color: var(--c-white);
+  }
+
+  .header-actions {
+    display: none;
+    align-items: center;
+    gap: var(--s-4);
+  }
+
+  .menu-toggle {
+    display: grid;
+    place-content: center;
+    gap: 6px;
+    width: 48px;
+    height: 48px;
+    margin-left: auto;
+    padding: 0;
+    background: transparent;
+    border: 1px solid var(--c-line);
+    border-radius: var(--r-pill);
+    cursor: pointer;
+  }
+
+  .menu-bar {
+    display: block;
+    width: 20px;
+    height: 2px;
+    background: var(--c-white);
+    border-radius: 2px;
+    transition: transform var(--t-fast) var(--ease-out);
+  }
+
+  .menu-toggle[aria-expanded='true'] .menu-bar:first-child {
+    transform: translateY(4px) rotate(45deg);
+  }
+
+  .menu-toggle[aria-expanded='true'] .menu-bar:last-child {
+    transform: translateY(-4px) rotate(-45deg);
+  }
+
+  .mobile-menu {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: var(--s-7);
+    height: calc(100dvh - var(--header-h));
+    padding: var(--s-7) var(--gutter) var(--s-7);
+    overflow-y: auto;
+  }
+
+  .mobile-menu[hidden] {
+    display: none;
+  }
+
+  .mobile-links {
+    display: grid;
+    gap: var(--s-2);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .mobile-links a {
+    display: block;
+    padding-block: var(--s-2);
+    font-size: clamp(2rem, 9vw, 2.75rem);
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    line-height: 1.1;
+    text-decoration: none;
+  }
+
+  .mobile-footer {
+    display: grid;
+    gap: var(--s-5);
+    justify-items: start;
+  }
+
+  @media (min-width: 1024px) {
+    .header-nav,
+    .header-actions {
+      display: flex;
+    }
+
+    .header-nav {
+      margin-inline: auto;
+    }
+
+    .menu-toggle {
+      display: none;
+    }
+  }
+
+  @media (min-width: 1024px) and (max-width: 1199px) {
+    .header-nav ul {
+      gap: var(--s-5);
+    }
+
+    .header-actions :global(.header-cta) {
+      padding-inline: var(--s-5);
+    }
+  }
+</style>

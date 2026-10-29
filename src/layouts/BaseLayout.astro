@@ -1,0 +1,56 @@
+---
+import '../styles/global.css';
+import { languages } from '../i18n';
+
+interface Props {
+  title: string;
+  description: string;
+  htmlLang?: string;
+  noindex?: boolean;
+  restoreLang?: boolean;
+}
+
+const { title, description, htmlLang = 'pt-BR', noindex = false, restoreLang = false } = Astro.props;
+const site = Astro.site ?? new URL('https://example.com');
+---
+
+<!doctype html>
+<html lang={htmlLang}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta name="theme-color" content="#0E1A2E" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    {noindex && <meta name="robots" content="noindex, nofollow" />}
+    {
+      !noindex &&
+        languages.map((l) => (
+          <link rel="alternate" hreflang={l.code === 'pt' ? 'pt-BR' : l.code} href={new URL(l.href, site).href} />
+        ))
+    }
+    {!noindex && <link rel="alternate" hreflang="x-default" href={new URL('/', site).href} />}
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <slot name="head" />
+    {
+      restoreLang && (
+        <script is:inline>
+          // Respeita o idioma escolhido anteriormente pelo visitante
+          try {
+            var saved = localStorage.getItem('jc-lang');
+            if (saved === 'en' || saved === 'es') location.replace('/' + saved + '/');
+          } catch (e) {}
+        </script>
+      )
+    }
+    <script is:inline>
+      document.documentElement.classList.add('js');
+    </script>
+  </head>
+  <body>
+    <slot />
+  </body>
+</html>

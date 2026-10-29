@@ -1,0 +1,86 @@
+---
+interface Props {
+  index?: string;
+  title: string;
+  detail?: string;
+  tone?: 'light' | 'dark';
+}
+
+const { index, title, detail, tone = 'light' } = Astro.props;
+---
+
+<article class:list={['card', `card-${tone}`]} data-reveal>
+  {index && <span class="card-index" aria-hidden="true">{index}</span>}
+  <h3 class="card-title">{title}</h3>
+  <div class="card-body">
+    <slot />
+  </div>
+  {detail && <p class="card-detail">{detail}</p>}
+</article>
+
+<style>
+  .card {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-4);
+    height: 100%;
+    padding: var(--s-6);
+    border-radius: var(--r-md);
+    border: 1px solid var(--c-line-light);
+    transition:
+      transform var(--t-fast) var(--ease-out),
+      border-color var(--t-fast) var(--ease-out);
+  }
+
+  .card-light {
+    background: var(--c-white);
+  }
+
+  .card-dark {
+    background: rgb(255 255 255 / 0.04);
+    border-color: var(--c-line);
+  }
+
+  .card-index {
+    font-size: var(--fs-small);
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    color: var(--c-blue-500);
+  }
+
+  .card-dark .card-index {
+    color: var(--c-blue-300);
+  }
+
+  .card-title {
+    font-size: var(--fs-h3);
+    font-weight: 700;
+  }
+
+  .card-body {
+    color: var(--c-ink-70);
+  }
+
+  .card-dark .card-body {
+    color: var(--c-white-70);
+  }
+
+  .card-detail {
+    margin-top: auto;
+    padding-top: var(--s-4);
+    border-top: 1px solid var(--c-line-light);
+    font-size: var(--fs-small);
+    font-weight: 500;
+  }
+
+  .card-dark .card-detail {
+    border-color: var(--c-line);
+  }
+
+  @media (hover: hover) {
+    .card:hover {
+      transform: translateY(-4px);
+      border-color: var(--c-blue-500);
+    }
+  }
+</style>

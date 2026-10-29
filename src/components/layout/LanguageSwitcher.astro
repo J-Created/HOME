@@ -1,0 +1,80 @@
+---
+import { languages, type Lang } from '../../i18n';
+
+interface Props {
+  current: Lang;
+  label: string;
+}
+
+const { current, label } = Astro.props;
+---
+
+<nav class="lang" aria-label={label}>
+  <ul>
+    {
+      languages.map((l) => (
+        <li>
+          <a
+            href={l.href}
+            hreflang={l.code === 'pt' ? 'pt-BR' : l.code}
+            lang={l.code === 'pt' ? 'pt-BR' : l.code}
+            aria-current={l.code === current ? 'true' : undefined}
+            aria-label={`${l.label}, ${l.name}`}
+            data-lang={l.code}
+          >
+            {l.label}
+          </a>
+        </li>
+      ))
+    }
+  </ul>
+</nav>
+
+<script>
+  // Guarda a escolha de idioma no navegador do visitante
+  document.querySelectorAll<HTMLAnchorElement>('.lang a[data-lang]').forEach((link) => {
+    link.addEventListener('click', () => {
+      try {
+        localStorage.setItem('jc-lang', link.dataset.lang ?? 'pt');
+      } catch {}
+    });
+  });
+</script>
+
+<style>
+  .lang ul {
+    display: flex;
+    gap: 2px;
+    margin: 0;
+    padding: 3px;
+    list-style: none;
+    border: 1px solid var(--c-line);
+    border-radius: var(--r-pill);
+  }
+
+  .lang a {
+    display: grid;
+    place-items: center;
+    min-width: 40px;
+    min-height: 34px;
+    padding-inline: var(--s-2);
+    border-radius: var(--r-pill);
+    font-size: var(--fs-small);
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-decoration: none;
+    color: var(--c-white-70);
+    transition:
+      background-color var(--t-fast) var(--ease-out),
+      color var(--t-fast) var(--ease-out);
+  }
+
+  .lang a:hover {
+    color: var(--c-white);
+  }
+
+  .lang a[aria-current='true'] {
+    background: var(--c-white);
+    color: var(--c-blue-900);
+  }
+</style>

@@ -1,0 +1,163 @@
+---
+// Página temporária para aprovar o design system (etapa 2). Remover antes de publicar.
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Section from '../components/ui/Section.astro';
+import Button from '../components/ui/Button.astro';
+import Card from '../components/ui/Card.astro';
+import Glow from '../components/ui/Glow.astro';
+
+const colors = [
+  { name: 'Branco', token: '--c-white', hex: '#FFFFFF' },
+  { name: 'Azul muito claro', token: '--c-blue-50', hex: '#E7F1FB' },
+  { name: 'Azul claro', token: '--c-blue-300', hex: '#9EC9F3' },
+  { name: 'Azul principal', token: '--c-blue-500', hex: '#2F78C8' },
+  { name: 'Azul escuro', token: '--c-blue-900', hex: '#173A5E' },
+  { name: 'Azul noite', token: '--c-night', hex: '#0E1A2E' },
+];
+---
+
+<BaseLayout title="Design system — J.Created" description="Página interna de aprovação do design system." noindex>
+  <Section tone="night">
+    <Glow slot="background" position="top-right" />
+    <p class="eyebrow">Design system</p>
+    <p class="ds-display">Filmmaker<span class="dot">.</span></p>
+    <p class="ds-display ds-step">Site<span class="dot">.</span></p>
+    <p class="serif ds-serif">uma agência só.</p>
+    <div class="ds-row">
+      <Button href="#" variant="inverse" icon="whatsapp">Falar no WhatsApp</Button>
+      <Button href="#" variant="secondary" icon="down">Conheça os serviços</Button>
+    </div>
+  </Section>
+
+  <Section tone="light">
+    <p class="eyebrow">Paleta</p>
+    <ul class="ds-swatches">
+      {
+        colors.map((c) => (
+          <li>
+            <span class="ds-swatch" style={`background: var(${c.token})`} />
+            <strong>{c.name}</strong>
+            <code>{c.hex}</code>
+          </li>
+        ))
+      }
+    </ul>
+  </Section>
+
+  <Section tone="tint">
+    <p class="eyebrow">Tipografia</p>
+    <h1 class="ds-h1">Título de seção. <span class="serif">com contraste.</span></h1>
+    <h2 class="ds-h2">Subtítulo em Archivo</h2>
+    <p class="lead">Texto de destaque em Archivo, usado logo abaixo dos títulos para apresentar a seção.</p>
+    <p>
+      Texto corrido em Archivo Regular. Clareza, objetividade e segurança: a marca fala a língua do dono de clínica,
+      sem jargão e sem promessas que não pode cumprir.
+    </p>
+    <div class="ds-row">
+      <Button href="#" icon="whatsapp">Falar no WhatsApp</Button>
+      <Button href="#" variant="secondary" icon="arrow">Botão secundário</Button>
+    </div>
+  </Section>
+
+  <Section tone="tint">
+    <p class="eyebrow">Cards</p>
+    <div class="ds-grid">
+      <Card index="01" title="Filmmaker." detail="Atendimento presencial em Vila Velha/ES.">
+        <p>Exemplo de card de serviço, com a estrutura aprovada.</p>
+      </Card>
+      <Card index="02" title="Design." detail="Atendimento para todo o Brasil.">
+        <p>Exemplo de card de serviço, com a estrutura aprovada.</p>
+      </Card>
+    </div>
+  </Section>
+
+  <Section tone="night">
+    <div class="ds-grid">
+      <Card index="03" title="Site." tone="dark" detail="Card sobre fundo escuro.">
+        <p>Variante translúcida para seções escuras.</p>
+      </Card>
+      <Card index="04" title="IA." tone="dark" detail="Card sobre fundo escuro.">
+        <p>Variante translúcida para seções escuras.</p>
+      </Card>
+    </div>
+  </Section>
+</BaseLayout>
+
+<style>
+  .ds-display {
+    font-size: var(--fs-display);
+    font-weight: 800;
+    line-height: var(--lh-display);
+    letter-spacing: var(--ls-display);
+    max-width: none;
+  }
+
+  .ds-step {
+    padding-left: 0.6em;
+  }
+
+  .ds-serif {
+    margin-top: var(--s-5);
+    font-size: var(--fs-serif);
+  }
+
+  .ds-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-4);
+    margin-top: var(--s-7);
+  }
+
+  .ds-h1 {
+    font-size: var(--fs-h1);
+    margin-block: var(--s-4);
+  }
+
+  .ds-h1 .serif {
+    font-weight: 400;
+    color: var(--c-blue-500);
+  }
+
+  .ds-h2 {
+    font-size: var(--fs-h2);
+    margin-bottom: var(--s-4);
+  }
+
+  .lead {
+    margin-bottom: var(--s-4);
+  }
+
+  .ds-swatches {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: var(--s-5);
+    margin: var(--s-5) 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .ds-swatches li {
+    display: grid;
+    gap: var(--s-1);
+  }
+
+  .ds-swatch {
+    display: block;
+    aspect-ratio: 4 / 3;
+    margin-bottom: var(--s-2);
+    border-radius: var(--r-md);
+    border: 1px solid var(--c-line-light);
+  }
+
+  .ds-grid {
+    display: grid;
+    gap: var(--s-5);
+    margin-top: var(--s-5);
+  }
+
+  @media (min-width: 768px) {
+    .ds-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+</style>

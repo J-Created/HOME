@@ -1,0 +1,265 @@
+---
+import Section from '../ui/Section.astro';
+import Glow from '../ui/Glow.astro';
+import type { Content } from '../../i18n/pt';
+
+interface Props {
+  content: Content;
+}
+
+const { contact } = Astro.props.content;
+---
+
+<Section id="contato" tone="dark" labelledby="contato-title">
+  <Glow slot="background" position="top-right" size="md" />
+
+  <div class="contact">
+    <div class="contact-copy" data-reveal>
+      <p class="eyebrow">{contact.eyebrow}</p>
+      <h2 id="contato-title" class="section-title">
+        {contact.title} <span class="serif">{contact.titleSerif}</span>
+      </h2>
+      <p class="lead contact-text">{contact.text}</p>
+    </div>
+
+    <form
+      class="contact-form"
+      data-contact-form
+      data-message={contact.message}
+      data-message-unsure={contact.messageUnsure}
+      data-unsure={contact.serviceUnsure}
+      novalidate
+      data-reveal
+    >
+      <div class="field">
+        <label for="contact-name">{contact.nameLabel}</label>
+        <input
+          id="contact-name"
+          name="nome"
+          type="text"
+          autocomplete="name"
+          placeholder={contact.namePlaceholder}
+          required
+          aria-describedby="contact-name-error"
+          data-error={contact.errorName}
+        />
+        <p class="field-error" id="contact-name-error" aria-live="polite"></p>
+      </div>
+
+      <div class="field">
+        <label for="contact-service">{contact.serviceLabel}</label>
+        <div class="select">
+          <select
+            id="contact-service"
+            name="servico"
+            required
+            aria-describedby="contact-service-error"
+            data-error={contact.errorService}
+          >
+            <option value="" selected disabled>{contact.servicePlaceholder}</option>
+            {contact.services.map((s) => <option value={s}>{s}</option>)}
+            <option value={contact.serviceUnsure}>{contact.serviceUnsure}</option>
+          </select>
+        </div>
+        <p class="field-error" id="contact-service-error" aria-live="polite"></p>
+      </div>
+
+      <button class="btn-submit" type="submit">
+        <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" fill="currentColor">
+          <path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2Zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.3-.4.2-.4.7-1.4.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.7 11.8 11.8 0 0 0 4.5 4c1.7.7 2.3.8 3.2.6.5-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.2-1.2-.1-.1-.3-.2-.5-.3Z" />
+        </svg>
+        {contact.submit}
+      </button>
+      <p class="contact-note">{contact.note}</p>
+    </form>
+  </div>
+</Section>
+
+<script>
+  import { whatsappUrl } from '../../lib/whatsapp';
+
+  const form = document.querySelector<HTMLFormElement>('[data-contact-form]');
+
+  if (form) {
+    const name = form.querySelector<HTMLInputElement>('#contact-name')!;
+    const service = form.querySelector<HTMLSelectElement>('#contact-service')!;
+
+    const setError = (field: HTMLInputElement | HTMLSelectElement, show: boolean) => {
+      const error = document.getElementById(field.getAttribute('aria-describedby')!)!;
+      field.setAttribute('aria-invalid', String(show));
+      error.textContent = show ? (field.dataset.error ?? '') : '';
+    };
+
+    name.addEventListener('input', () => name.value.trim() && setError(name, false));
+    service.addEventListener('change', () => service.value && setError(service, false));
+
+    form.addEventListener('submit', (event) => {
+      // O formulário nunca é enviado ao servidor: os dados vão só para a mensagem do WhatsApp
+      event.preventDefault();
+
+      const nameValue = name.value.trim();
+      const serviceValue = service.value;
+      setError(name, !nameValue);
+      setError(service, !serviceValue);
+
+      if (!nameValue) return name.focus();
+      if (!serviceValue) return service.focus();
+
+      const template = serviceValue === form.dataset.unsure ? form.dataset.messageUnsure! : form.dataset.message!;
+      const message = template.replace('{nome}', nameValue).replace('{servico}', serviceValue);
+      window.open(whatsappUrl(message), '_blank', 'noopener');
+    });
+  }
+</script>
+
+<style>
+  .contact {
+    display: grid;
+    gap: var(--s-8);
+    align-items: start;
+  }
+
+  .contact-copy {
+    display: grid;
+    gap: var(--s-4);
+  }
+
+  .contact-copy :global(.section-title .serif) {
+    color: var(--c-blue-300);
+  }
+
+  .contact-text {
+    margin-top: var(--s-3);
+    color: var(--c-white-70);
+  }
+
+  .contact-form {
+    display: grid;
+    gap: var(--s-5);
+    padding: var(--s-6);
+    border: 1px solid var(--c-line);
+    border-radius: var(--r-lg);
+    background: rgb(255 255 255 / 0.04);
+  }
+
+  .field {
+    display: grid;
+    gap: var(--s-2);
+  }
+
+  label {
+    font-size: var(--fs-small);
+    font-weight: 600;
+  }
+
+  input,
+  select {
+    width: 100%;
+    min-height: 52px;
+    padding: var(--s-3) var(--s-4);
+    border: 1px solid var(--c-line);
+    border-radius: var(--r-sm);
+    background: rgb(14 26 46 / 0.5);
+    color: var(--c-white);
+    font-size: 1rem;
+    transition: border-color var(--t-fast) var(--ease-out);
+  }
+
+  input::placeholder {
+    color: rgb(255 255 255 / 0.45);
+  }
+
+  input:hover,
+  select:hover {
+    border-color: rgb(158 201 243 / 0.45);
+  }
+
+  input:focus-visible,
+  select:focus-visible {
+    border-color: var(--c-blue-300);
+  }
+
+  [aria-invalid='true'] {
+    border-color: var(--c-blue-300);
+    box-shadow: 0 0 0 1px var(--c-blue-300);
+  }
+
+  .select {
+    position: relative;
+  }
+
+  .select::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    right: var(--s-4);
+    width: 8px;
+    height: 8px;
+    border-right: 2px solid var(--c-blue-300);
+    border-bottom: 2px solid var(--c-blue-300);
+    transform: translateY(-70%) rotate(45deg);
+    pointer-events: none;
+  }
+
+  select {
+    appearance: none;
+    padding-right: var(--s-8);
+    cursor: pointer;
+  }
+
+  select:invalid {
+    color: rgb(255 255 255 / 0.55);
+  }
+
+  option {
+    color: var(--c-blue-900);
+    background: var(--c-white);
+  }
+
+  .field-error {
+    min-height: 1.4em;
+    font-size: var(--fs-small);
+    color: var(--c-blue-300);
+  }
+
+  .field-error:empty {
+    min-height: 0;
+  }
+
+  .btn-submit {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--s-3);
+    min-height: 52px;
+    margin-top: var(--s-2);
+    padding: var(--s-3) var(--s-6);
+    border: 0;
+    border-radius: var(--r-pill);
+    background: var(--c-white);
+    color: var(--c-blue-900);
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color var(--t-fast) var(--ease-out);
+  }
+
+  .btn-submit:hover {
+    background: var(--c-blue-50);
+  }
+
+  .contact-note {
+    font-size: var(--fs-small);
+    color: var(--c-white-70);
+  }
+
+  @media (min-width: 1024px) {
+    .contact {
+      grid-template-columns: 1fr 1fr;
+      gap: var(--s-9);
+    }
+
+    .contact-form {
+      padding: var(--s-7);
+    }
+  }
+</style>

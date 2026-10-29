@@ -1,0 +1,97 @@
+---
+import Section from '../ui/Section.astro';
+import type { Content } from '../../i18n/pt';
+
+interface Props {
+  content: Content;
+}
+
+const { ecosystem } = Astro.props.content;
+---
+
+<Section id="ecossistema" tone="light" labelledby="ecossistema-title">
+  <div class="eco-head" data-reveal>
+    <p class="eyebrow">{ecosystem.eyebrow}</p>
+    <h2 id="ecossistema-title" class="section-title">
+      {ecosystem.title} <span class="serif">{ecosystem.titleSerif}</span>
+    </h2>
+  </div>
+
+  <div class="eco-text" data-reveal>
+    {ecosystem.paragraphs.map((p) => <p>{p}</p>)}
+  </div>
+
+  <ol class="eco-points">
+    {
+      ecosystem.points.map((point, i) => (
+        <li class="eco-point" data-reveal>
+          <span class="eco-index" aria-hidden="true">
+            {String(i + 1).padStart(2, '0')}
+          </span>
+          <h3>{point.title}</h3>
+          <p>{point.text}</p>
+        </li>
+      ))
+    }
+  </ol>
+</Section>
+
+<style>
+  .eco-head {
+    display: grid;
+    gap: var(--s-4);
+  }
+
+  .eco-head h2 {
+    max-width: 17ch;
+  }
+
+  .eco-text {
+    display: grid;
+    gap: var(--s-5);
+    margin-top: var(--s-7);
+    color: var(--c-ink-70);
+  }
+
+  .eco-points {
+    display: grid;
+    gap: var(--s-6);
+    margin: var(--s-8) 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .eco-point {
+    display: grid;
+    gap: var(--s-3);
+    padding-top: var(--s-5);
+    border-top: 1px solid var(--c-line-light);
+  }
+
+  .eco-index {
+    font-size: var(--fs-small);
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    color: var(--c-blue-500);
+  }
+
+  .eco-point h3 {
+    font-size: var(--fs-h3);
+    font-weight: 700;
+  }
+
+  .eco-point p {
+    color: var(--c-ink-70);
+  }
+
+  @media (min-width: 768px) {
+    .eco-text {
+      grid-template-columns: repeat(2, 1fr);
+      gap: var(--s-7);
+    }
+
+    .eco-points {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+</style>

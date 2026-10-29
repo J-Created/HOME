@@ -1,0 +1,92 @@
+---
+// Brilho radial azul + círculos concêntricos finos (grafismo da peça de referência)
+interface Props {
+  position?: 'top-right' | 'bottom-left' | 'center';
+  size?: 'md' | 'lg';
+}
+
+const { position = 'top-right', size = 'lg' } = Astro.props;
+---
+
+<div class:list={['glow', `glow-${position}`, `glow-${size}`]} aria-hidden="true">
+  <div class="glow-light"></div>
+  <svg class="glow-rings" viewBox="0 0 800 800" fill="none">
+    <circle cx="400" cy="400" r="250" stroke="currentColor" stroke-width="1" />
+    <circle cx="400" cy="400" r="330" stroke="currentColor" stroke-width="1" stroke-dasharray="2 10" />
+    <circle cx="400" cy="400" r="395" stroke="currentColor" stroke-width="1" stroke-dasharray="1 14" />
+  </svg>
+</div>
+
+<style>
+  .glow {
+    position: absolute;
+    z-index: 0;
+    pointer-events: none;
+    color: var(--c-line);
+  }
+
+  .glow-lg {
+    width: min(110vw, 900px);
+    aspect-ratio: 1;
+  }
+
+  .glow-md {
+    width: min(90vw, 600px);
+    aspect-ratio: 1;
+  }
+
+  .glow-top-right {
+    top: 0;
+    right: 0;
+    transform: translate(35%, -35%);
+  }
+
+  .glow-bottom-left {
+    bottom: 0;
+    left: 0;
+    transform: translate(-40%, 40%);
+  }
+
+  .glow-center {
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  .glow-light {
+    position: absolute;
+    inset: 18%;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgb(47 120 200 / 0.55) 0%, rgb(47 120 200 / 0.18) 45%, transparent 70%);
+    filter: blur(20px);
+    animation: glow-drift 12s ease-in-out infinite alternate;
+  }
+
+  .glow-rings {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  @keyframes glow-drift {
+    from {
+      transform: scale(1) translate(0, 0);
+      opacity: 0.85;
+    }
+    to {
+      transform: scale(1.08) translate(-2%, 2%);
+      opacity: 1;
+    }
+  }
+
+  @media (max-width: 767px) {
+    .glow-lg {
+      width: 120vw;
+    }
+
+    .glow-top-right {
+      transform: translate(45%, -40%);
+    }
+  }
+</style>

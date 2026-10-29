@@ -1,0 +1,63 @@
+---
+import Container from './Container.astro';
+
+interface Props {
+  id?: string;
+  tone?: 'light' | 'tint' | 'dark' | 'night';
+  labelledby?: string;
+  class?: string;
+}
+
+const { id, tone = 'light', labelledby, class: className } = Astro.props;
+---
+
+<section id={id} class:list={['section', `tone-${tone}`, className]} aria-labelledby={labelledby}>
+  <slot name="background" />
+  <Container class="section-inner">
+    <slot />
+  </Container>
+</section>
+
+<style>
+  .section {
+    position: relative;
+    padding-block: var(--section-y);
+    overflow: hidden;
+    isolation: isolate;
+  }
+
+  .tone-light {
+    background: var(--c-white);
+    color: var(--c-blue-900);
+  }
+
+  .tone-tint {
+    background: var(--c-blue-50);
+    color: var(--c-blue-900);
+  }
+
+  .tone-dark {
+    background: var(--c-blue-900);
+    color: var(--c-white);
+  }
+
+  .tone-night {
+    background: var(--c-night);
+    color: var(--c-white);
+  }
+
+  :global(.section-inner) {
+    position: relative;
+    z-index: 1;
+  }
+
+  .tone-dark :global(.serif),
+  .tone-night :global(.serif) {
+    color: var(--c-blue-300);
+  }
+
+  .tone-dark :global(.eyebrow),
+  .tone-night :global(.eyebrow) {
+    color: var(--c-blue-300);
+  }
+</style>
