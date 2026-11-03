@@ -115,6 +115,8 @@ Escala baseada em 8 px:
 - Respeitar as normas dos conselhos: nada de "antes e depois", pacientes identificáveis sem autorização ou promessas de resultado.
 - [PENDENTE] Fotos de João e Júlia e o material de portfólio.
 
+**Exceção temporária (aprovada em 2026-11-03):** o hero usa um vídeo de banco, o Pexels #6763240 (refletor odontológico acendendo, licença Pexels de uso comercial livre), até a J.Created ter um vídeo próprio. Tratamento aplicado: espelhado, dessaturado e esfriado, 1600 px, 4,8 s, sem áudio, 243 KB. Ele toca uma vez e para com a luz acesa. Com "reduzir movimento" ou economia de dados, mostra só a imagem final. Arquivos em `public/media/hero-luz*`. Quando chegar o vídeo próprio, substituir esses arquivos e remover esta exceção.
+
 ## 10. Tratamento do produto (serviços)
 Como os serviços são intangíveis, eles aparecem por meio de:
 - **Filmmaker:** frames e trechos de vídeo reais (poster + play).

@@ -30,11 +30,15 @@
 
 - 2026-10-29 — **Hospedagem:** GitHub Pages via GitHub Actions (Settings → Pages → Source → GitHub Actions), no endereço `https://j-created.github.io/HOME/`.
 
+- 2026-11-03 — **Vídeo provisório no hero:** Pexels #6763240 (refletor acendendo), escolhido pelo João. É exceção temporária à regra de "só material próprio" (`design.md` §9) até existir um vídeo da J.Created.
+
 ## Decisões rejeitadas
 - 2026-10-29 — **Tráfego pago** fora do portfólio inicial.
 - 2026-10-29 — **"Sua clínica em um só traço."** não aprovado como slogan.
 - 2026-10-29 — **Propósito genérico** ("Gerar valor e impulsionar o crescimento...") substituído pela versão focada em clínicas.
 - 2026-10-29 — **"Design" em Archivo Regular**: leitura incorreta. Na peça, os três títulos estão no mesmo peso forte.
+
+- 2026-11-03 — Vídeos de banco descartados para o hero: Pexels 14209854 (vertical, rosto do paciente, luz laranja) e 6192876 (paciente com afastador, expressão tensa, luvas verde-água).
 
 ## Alterações realizadas
 - 2026-10-29 — Criados `BrandKit.md`, `CLAUDE.md`, `specs/site.md`, `specs/design.md` e `memoria.md`.
@@ -79,6 +83,8 @@
 - 2026-10-29 — `npm ci` com o servidor de desenvolvimento rodando falha no Windows (EPERM em arquivo travado). Pare o servidor antes de reinstalar dependências.
 
 - 2026-10-29 — No site publicado, em 1024 px o "Quem somos" quebrava em duas linhas no menu. O menu completo passou a aparecer só a partir de 1200 px; abaixo disso, entra o hambúrguer, e o botão flutuante do WhatsApp acompanha.
+
+- 2026-11-03 — Hero com vídeo: no desktop ele ocupa a área à direita (a partir de 36% da largura), com degradê Azul noite; no celular fica atrás do texto, com escurecimento vertical. Foi cortado para 4,8 s, para não precisar de botão de pausa (WCAG 2.2.2), e começa 0,7 s depois do carregamento. Lighthouse: 99–100 nas 4 categorias, LCP 1,5 s. O ffmpeg foi instalado em `%LOCALAPPDATA%\Programs\ffmpeg` para tratar vídeos.
 
 ## Pendências
 - [ ] Confirmar o nome exato da fonte de display no PSD.

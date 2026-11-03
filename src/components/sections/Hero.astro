@@ -4,6 +4,7 @@ import Button from '../ui/Button.astro';
 import Container from '../ui/Container.astro';
 import type { Content } from '../../i18n/pt';
 import { whatsappUrl } from '../../lib/whatsapp';
+import { withBase } from '../../lib/paths';
 
 interface Props {
   content: Content;
@@ -14,6 +15,20 @@ const { hero, whatsapp } = content;
 ---
 
 <section class="hero" aria-labelledby="hero-title">
+  <!-- [PROVISÓRIO] Vídeo de banco (Pexels #6763240, licença livre) até a J.Created ter um vídeo próprio -->
+  <div class="hero-media" aria-hidden="true">
+    <video
+      class="hero-video"
+      muted
+      playsinline
+      preload="none"
+      tabindex="-1"
+      poster={withBase('/media/hero-luz-inicio.jpg')}
+      data-end-poster={withBase('/media/hero-luz-fim.jpg')}
+    >
+      <source src={withBase('/media/hero-luz.mp4')} type="video/mp4" />
+    </video>
+  </div>
   <Glow position="top-right" />
   <Container class="hero-inner">
     <h1 id="hero-title" class="hero-title">
@@ -43,7 +58,70 @@ const { hero, whatsapp } = content;
   </Container>
 </section>
 
+<script>
+  // Toca o vídeo uma vez (4,8 s) depois da entrada das palavras; para com a luz acesa.
+  // Com "reduzir movimento" ou economia de dados, mostra só a imagem final.
+  const video = document.querySelector<HTMLVideoElement>('.hero-video');
+
+  if (video) {
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const saveData = (navigator as Navigator & { connection?: { saveData?: boolean } }).connection?.saveData;
+
+    if (reduce || saveData) {
+      video.poster = video.dataset.endPoster ?? video.poster;
+    } else {
+      const start = () => {
+        setTimeout(() => {
+          video.load();
+          video.play().catch(() => {
+            video.poster = video.dataset.endPoster ?? video.poster;
+          });
+        }, 700);
+      };
+      if (document.readyState === 'complete') start();
+      else window.addEventListener('load', start, { once: true });
+    }
+  }
+</script>
+
 <style>
+  .hero-media {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  .hero-video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: 45% 30%;
+  }
+
+  /* Escurecimento Azul noite para manter o texto legível */
+  .hero-media::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(180deg, rgb(14 26 46 / 0.55) 0%, rgb(14 26 46 / 0.7) 40%, var(--c-night) 78%),
+      rgb(23 58 94 / 0.25);
+  }
+
+  @media (min-width: 1024px) {
+    .hero-media {
+      left: 36%;
+    }
+
+    .hero-media::after {
+      background:
+        linear-gradient(90deg, var(--c-night) 0%, rgb(14 26 46 / 0.72) 30%, rgb(14 26 46 / 0.35) 70%, rgb(14 26 46 / 0.45) 100%),
+        linear-gradient(180deg, rgb(14 26 46 / 0.2) 0%, transparent 40%, var(--c-night) 100%),
+        rgb(23 58 94 / 0.2);
+    }
+  }
+
   .hero {
     position: relative;
     display: flex;
