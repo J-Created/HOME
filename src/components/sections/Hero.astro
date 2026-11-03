@@ -112,6 +112,9 @@ const { hero, whatsapp } = content;
   @media (min-width: 1024px) {
     .hero-media {
       left: 36%;
+      /* Funde a borda esquerda do vídeo com o fundo, sem emenda visível */
+      -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 22%);
+      mask-image: linear-gradient(90deg, transparent 0%, #000 22%);
     }
 
     .hero-media::after {
