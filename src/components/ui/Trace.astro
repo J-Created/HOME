@@ -1,0 +1,83 @@
+---
+// Traço contínuo no estilo da logo, que se desenha conforme a rolagem
+interface Props {
+  tone?: 'light' | 'tint' | 'dark' | 'night';
+  variant?: 'a' | 'b';
+}
+
+const { tone = 'night', variant = 'a' } = Astro.props;
+
+const paths = {
+  a: 'M-10 110 C 180 110 260 40 440 40 C 600 40 640 120 780 120 C 880 120 920 70 1000 70 C 1080 70 1100 118 1180 118 C 1280 118 1330 60 1450 60',
+  b: 'M-10 50 C 160 50 240 120 420 120 C 560 120 620 40 760 40 C 860 40 900 100 980 100 C 1060 100 1110 30 1220 30 C 1320 30 1360 90 1450 90',
+};
+---
+
+<div class:list={['trace', `trace-${tone}`, (tone === 'night' || tone === 'dark') && 'grain']} aria-hidden="true">
+  <svg viewBox="0 0 1440 160" preserveAspectRatio="none" data-trace>
+    <path class="trace-base" d={paths[variant]} pathLength="1"></path>
+    <path class="trace-line" d={paths[variant]} pathLength="1"></path>
+  </svg>
+</div>
+
+<style>
+  .trace {
+    position: relative;
+    height: clamp(72px, 10vw, 160px);
+    overflow: hidden;
+  }
+
+  .trace-light {
+    background: var(--c-white);
+  }
+
+  .trace-tint {
+    background: var(--c-blue-50);
+  }
+
+  .trace-dark {
+    background: var(--c-blue-900);
+  }
+
+  .trace-night {
+    background: var(--c-night);
+  }
+
+  svg {
+    position: absolute;
+    z-index: 1;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+  }
+
+  path {
+    fill: none;
+    stroke-width: 2;
+    vector-effect: non-scaling-stroke;
+    stroke-linecap: round;
+  }
+
+  .trace-base {
+    stroke: var(--c-line);
+  }
+
+  .trace-light .trace-base,
+  .trace-tint .trace-base {
+    stroke: var(--c-line-light);
+  }
+
+  .trace-line {
+    stroke: var(--c-blue-500);
+    stroke-width: 3;
+    stroke-dasharray: 1;
+    stroke-dashoffset: var(--draw, 0);
+    filter: drop-shadow(0 0 6px rgb(47 120 200 / 0.6));
+  }
+
+  :global(.js) .trace-line {
+    stroke-dashoffset: var(--draw, 1);
+  }
+
+</style>

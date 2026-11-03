@@ -5,10 +5,12 @@ import Footer from './layout/Footer.astro';
 import FloatingWhatsApp from './layout/FloatingWhatsApp.astro';
 import Hero from './sections/Hero.astro';
 import Ecosystem from './sections/Ecosystem.astro';
+import Statement from './sections/Statement.astro';
 import Services from './sections/Services.astro';
 import Differential from './sections/Differential.astro';
 import About from './sections/About.astro';
 import Contact from './sections/Contact.astro';
+import Trace from './ui/Trace.astro';
 import { getContent, type Lang } from '../i18n';
 
 interface Props {
@@ -30,9 +32,12 @@ const content = getContent(lang);
 
   <main id="conteudo">
     <Hero content={content} />
+    <Trace tone="night" variant="a" />
     <Ecosystem content={content} />
+    <Statement text={content.hero.slogan} />
     <Services content={content} />
     <Differential content={content} />
+    <Trace tone="light" variant="b" />
     <!-- Portfólio: fora do site até existir material real e autorizado (specs/site.md) -->
     <About content={content} />
     <Contact content={content} />
@@ -43,7 +48,7 @@ const content = getContent(lang);
 </BaseLayout>
 
 <script>
-  // Revelação suave ao rolar
+  // Revelação suave ao entrar na tela
   const items = document.querySelectorAll('[data-reveal]');
   if ('IntersectionObserver' in window) {
     const io = new IntersectionObserver(
@@ -60,5 +65,46 @@ const content = getContent(lang);
     items.forEach((el) => io.observe(el));
   } else {
     items.forEach((el) => el.classList.add('is-visible'));
+  }
+
+  // Efeitos ligados à rolagem: traços que se desenham e frase que desliza
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const traces = [...document.querySelectorAll<SVGElement>('[data-trace]')];
+  const sliders = [...document.querySelectorAll<HTMLElement>('[data-scroll-x]')];
+
+  if (reduce) {
+    traces.forEach((t) => t.style.setProperty('--draw', '0'));
+  } else if (traces.length || sliders.length) {
+    // 0 quando o elemento entra pela base da tela, 1 quando sai pelo topo
+    const progress = (el: Element) => {
+      const r = el.getBoundingClientRect();
+      const vh = window.innerHeight;
+      return Math.min(1, Math.max(0, (vh - r.top) / (vh + r.height)));
+    };
+
+    let ticking = false;
+    const update = () => {
+      ticking = false;
+      traces.forEach((t) => {
+        const p = Math.min(1, progress(t) * 1.8);
+        t.style.setProperty('--draw', String(1 - p));
+      });
+      sliders.forEach((s) => {
+        const p = progress(s.parentElement ?? s);
+        const travel = s.scrollWidth - window.innerWidth * 0.6;
+        s.style.setProperty('--x', `${window.innerWidth * 0.1 - p * travel}px`);
+      });
+    };
+
+    const onScroll = () => {
+      if (!ticking) {
+        ticking = true;
+        requestAnimationFrame(update);
+      }
+    };
+
+    update();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll);
   }
 </script>

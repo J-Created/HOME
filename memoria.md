@@ -32,6 +32,8 @@
 
 - 2026-11-03 — **Vídeo provisório no hero:** Pexels #6763240 (refletor acendendo), escolhido pelo João. É exceção temporária à regra de "só material próprio" (`design.md` §9) até existir um vídeo da J.Created.
 
+- 2026-11-03 — **Nova direção visual: "editorial ousado"**, no lugar de "minimalista". O João achou o site simples demais. O plano aprovado: traço da logo como fio condutor animado, diagrama do ecossistema, serviços em cenas empilhadas, frase gigante com rolagem, mais seções escuras, grão e brilhos. A stack Astro foi mantida (não era a causa).
+
 ## Decisões rejeitadas
 - 2026-10-29 — **Tráfego pago** fora do portfólio inicial.
 - 2026-10-29 — **"Sua clínica em um só traço."** não aprovado como slogan.

@@ -1,0 +1,58 @@
+---
+// Frase gigante que desliza na horizontal com a rolagem
+interface Props {
+  text: string;
+}
+
+const { text } = Astro.props;
+---
+
+<section class="statement" aria-label={text}>
+  <p class="statement-line" data-scroll-x aria-hidden="true">
+    <span>{text}</span>
+    <span class="serif">{text}</span>
+  </p>
+</section>
+
+<style>
+  .statement {
+    position: relative;
+    padding-block: var(--s-9);
+    overflow: hidden;
+    background: var(--c-blue-50);
+    color: var(--c-blue-900);
+  }
+
+  .statement-line {
+    display: flex;
+    gap: 0.5em;
+    max-width: none;
+    width: max-content;
+    font-size: clamp(3.5rem, 11vw, 11rem);
+    font-weight: 800;
+    line-height: 1;
+    letter-spacing: -0.04em;
+    white-space: nowrap;
+    transform: translateX(var(--x, 0));
+    will-change: transform;
+  }
+
+  .statement-line .serif {
+    font-weight: 400;
+    color: var(--c-blue-500);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .statement-line {
+      width: auto;
+      flex-wrap: wrap;
+      padding-inline: var(--gutter);
+      white-space: normal;
+      transform: none;
+    }
+
+    .statement-line .serif {
+      display: none;
+    }
+  }
+</style>

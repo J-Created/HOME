@@ -7,12 +7,14 @@
 ---
 
 ## 1. Direção visual
-**"Escuro editorial com luz azul."**
-- Tipografia como protagonista: palavras enormes, curtas, terminadas em ponto.
+**"Editorial ousado, escuro, com luz azul."** (Atualizada em 2026-11-03. Antes era "minimalista e sofisticado", que deixou o site contido demais.)
+- Tipografia como protagonista: palavras enormes, curtas, terminadas em ponto, com movimento ligado à rolagem.
 - Contraste entre **força** (sans pesada e compacta) e **delicadeza** (serifada itálica leve).
-- Fundo azul-marinho profundo nas seções de impacto. Seções claras (branco / azul muito claro) para respiro e leitura.
-- Luz como elemento: brilho radial azul saindo do escuro, com círculos concêntricos finos.
-- Minimalista e sofisticado: poucos elementos, muito espaço, nada decorativo sem função.
+- Predomínio de seções escuras (Azul noite), com seções claras pontuais para leitura.
+- Luz como elemento: brilho radial azul saindo do escuro, círculos concêntricos finos e bordas luminosas.
+- **O traço contínuo da logo é o fio condutor:** ele se desenha com a rolagem e liga seções e serviços.
+- Momentos de impacto entre as seções: frases gigantes, diagrama animado do ecossistema, serviços em cenas de tela cheia.
+- Ousado sem ser poluído: cada efeito precisa reforçar a mensagem de conexão, precisão e cuidado.
 - O sentimento final é premium, seguro, preciso e humano, adequado ao universo das clínicas sem cair no clichê "médico".
 
 ## 2. Paleta
@@ -129,7 +131,11 @@ Como os serviços são intangíveis, eles aparecem por meio de:
 - **Princípio:** movimento lento, preciso e com propósito. Nada chamativo.
 - **Entrada do hero:** palavras sobem e aparecem em sequência ("Filmmaker." → "Site." → "Design." → "IA."), com 80–120 ms entre elas. A serifada aparece por último, com fade.
 - **Glow:** o brilho radial pulsa ou se desloca muito lentamente (ciclo de 8 s ou mais).
-- **Traço da logo [PROPOSTA]:** animação de "desenho" do traço contínuo (stroke) no carregamento ou como divisor de seção.
+- **Traço da logo (aprovado em 2026-11-03):** a logo do cabeçalho se desenha no carregamento. Entre as seções, traços no estilo da logo se desenham conforme a rolagem.
+- **Frase gigante:** desliza na horizontal acompanhando a rolagem (sem loop automático).
+- **Serviços:** cenas que se empilham (sticky) no desktop. No celular, ficam em sequência simples.
+- **Diagrama do ecossistema:** os nós acendem em sequência e o traço os conecta quando a seção entra na tela.
+- **Grão de filme:** textura sutil e estática sobre as seções escuras.
 - **Scroll:** revelação suave (fade + translate de 16–24 px), duração de 400–700 ms, easing `cubic-bezier(0.22, 1, 0.36, 1)`.
 - **Microinterações:** hover de botões e cards entre 150 e 250 ms.
 - `prefers-reduced-motion`: todas as animações viram transições instantâneas ou somem.

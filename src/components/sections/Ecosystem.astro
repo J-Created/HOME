@@ -1,24 +1,64 @@
 ---
 import Section from '../ui/Section.astro';
+import { LOGO_PATH } from '../../lib/logo';
 import type { Content } from '../../i18n/pt';
 
 interface Props {
   content: Content;
 }
 
-const { ecosystem } = Astro.props.content;
+const { ecosystem, services } = Astro.props.content;
+
+// Diagrama: os 4 serviços ligados por um único traço contínuo
+const LOOP = 'M100 150 C 190 50 330 40 410 120 C 490 200 510 330 420 400 C 330 470 200 480 120 410 C 40 340 40 230 100 150';
+const nodes = [
+  { x: 100, y: 150, anchor: 'end', dx: -22, dy: -14 },
+  { x: 410, y: 120, anchor: 'start', dx: 22, dy: -14 },
+  { x: 420, y: 400, anchor: 'start', dx: 22, dy: 28 },
+  { x: 120, y: 410, anchor: 'end', dx: -22, dy: 28 },
+];
+const labels = services.items.map((s) => s.title);
 ---
 
-<Section id="ecossistema" tone="light" labelledby="ecossistema-title">
-  <div class="eco-head" data-reveal>
-    <p class="eyebrow">{ecosystem.eyebrow}</p>
-    <h2 id="ecossistema-title" class="section-title">
-      {ecosystem.title} <span class="serif">{ecosystem.titleSerif}</span>
-    </h2>
-  </div>
+<Section id="ecossistema" tone="night" labelledby="ecossistema-title" class="grain">
 
-  <div class="eco-text" data-reveal>
-    {ecosystem.paragraphs.map((p) => <p>{p}</p>)}
+  <div class="eco">
+    <div class="eco-copy">
+      <div class="eco-head" data-reveal>
+        <p class="eyebrow">{ecosystem.eyebrow}</p>
+        <h2 id="ecossistema-title" class="section-title">
+          {ecosystem.title} <span class="serif">{ecosystem.titleSerif}</span>
+        </h2>
+      </div>
+
+      <div class="eco-text" data-reveal>
+        {ecosystem.paragraphs.map((p) => <p>{p}</p>)}
+      </div>
+    </div>
+
+    <figure class="eco-diagram" data-reveal aria-hidden="true">
+      <svg viewBox="-40 0 600 540">
+        <path class="eco-loop-base" d={LOOP} pathLength="1"></path>
+        <path class="eco-loop" d={LOOP} pathLength="1"></path>
+
+        <g class="eco-center" transform="translate(262 272) scale(0.9)">
+          <path d={LOGO_PATH} pathLength="1" transform="translate(-106 -97)"></path>
+          <circle cx="-65" cy="60" r="7.5"></circle>
+        </g>
+
+        {
+          nodes.map((n, i) => (
+            <g class="eco-node" style={`--i: ${i}`}>
+              <circle class="eco-node-ring" cx={n.x} cy={n.y} r="22"></circle>
+              <circle class="eco-node-dot" cx={n.x} cy={n.y} r="9"></circle>
+              <text x={n.x + n.dx} y={n.y + n.dy} text-anchor={n.anchor}>
+                {labels[i]}
+              </text>
+            </g>
+          ))
+        }
+      </svg>
+    </figure>
   </div>
 
   <ol class="eco-points">
@@ -37,26 +77,166 @@ const { ecosystem } = Astro.props.content;
 </Section>
 
 <style>
+  .eco {
+    display: grid;
+    gap: var(--s-8);
+    align-items: center;
+  }
+
+  .eco-copy {
+    display: grid;
+    gap: var(--s-7);
+  }
+
   .eco-head {
     display: grid;
     gap: var(--s-4);
   }
 
   .eco-head h2 {
-    max-width: 17ch;
+    max-width: 15ch;
+  }
+
+  .eco-head :global(.section-title .serif) {
+    color: var(--c-blue-300);
   }
 
   .eco-text {
     display: grid;
     gap: var(--s-5);
-    margin-top: var(--s-7);
-    color: var(--c-ink-70);
+    color: var(--c-white-70);
   }
 
+  /* Diagrama */
+  .eco-diagram {
+    margin: 0;
+    width: 100%;
+    max-width: 560px;
+    justify-self: center;
+  }
+
+  .eco-diagram svg {
+    width: 100%;
+    height: auto;
+    overflow: visible;
+  }
+
+  .eco-loop-base,
+  .eco-loop,
+  .eco-center path {
+    fill: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .eco-loop-base {
+    stroke: var(--c-line);
+    stroke-width: 2;
+  }
+
+  .eco-loop {
+    stroke: var(--c-blue-500);
+    stroke-width: 4;
+    filter: drop-shadow(0 0 8px rgb(47 120 200 / 0.7));
+  }
+
+  .eco-center path {
+    stroke: var(--c-white);
+    stroke-width: 7;
+  }
+
+  .eco-center circle {
+    fill: var(--c-blue-500);
+  }
+
+  .eco-node-ring {
+    fill: rgb(47 120 200 / 0.12);
+    stroke: var(--c-blue-300);
+    stroke-width: 1.5;
+  }
+
+  .eco-node-dot {
+    fill: var(--c-blue-300);
+  }
+
+  .eco-node text {
+    fill: var(--c-white);
+    font-family: var(--font-sans);
+    font-size: 26px;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+  }
+
+  /* Animação ao entrar na tela */
+  :global(.js) .eco-loop,
+  :global(.js) .eco-center path {
+    stroke-dasharray: 1;
+    stroke-dashoffset: 1;
+  }
+
+  :global(.js) .eco-node,
+  :global(.js) .eco-center circle {
+    opacity: 0;
+  }
+
+  :global(.js) .eco-diagram[data-reveal] {
+    opacity: 1;
+    transform: none;
+  }
+
+  :global(.js) .eco-diagram.is-visible .eco-loop {
+    animation: eco-draw 2.2s var(--ease-out) 0.2s forwards;
+  }
+
+  :global(.js) .eco-diagram.is-visible .eco-center path {
+    animation: eco-draw 1.4s var(--ease-out) 1.8s forwards;
+  }
+
+  :global(.js) .eco-diagram.is-visible .eco-center circle {
+    animation: eco-fade 400ms var(--ease-out) 3s forwards;
+  }
+
+  :global(.js) .eco-diagram.is-visible .eco-node {
+    animation: eco-fade 500ms var(--ease-out) forwards;
+    animation-delay: calc(0.5s + var(--i) * 0.45s);
+  }
+
+  :global(.js) .eco-diagram.is-visible .eco-node-ring {
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: eco-pulse 3.2s ease-in-out infinite;
+    animation-delay: calc(1s + var(--i) * 0.45s);
+  }
+
+  @keyframes eco-draw {
+    to {
+      stroke-dashoffset: 0;
+    }
+  }
+
+  @keyframes eco-fade {
+    to {
+      opacity: 1;
+    }
+  }
+
+  @keyframes eco-pulse {
+    0%,
+    100% {
+      transform: scale(1);
+      opacity: 1;
+    }
+    50% {
+      transform: scale(1.25);
+      opacity: 0.55;
+    }
+  }
+
+  /* Pontos */
   .eco-points {
     display: grid;
     gap: var(--s-6);
-    margin: var(--s-8) 0 0;
+    margin: var(--s-9) 0 0;
     padding: 0;
     list-style: none;
   }
@@ -65,14 +245,14 @@ const { ecosystem } = Astro.props.content;
     display: grid;
     gap: var(--s-3);
     padding-top: var(--s-5);
-    border-top: 1px solid var(--c-line-light);
+    border-top: 1px solid var(--c-line);
   }
 
   .eco-index {
     font-size: var(--fs-small);
     font-weight: 600;
     letter-spacing: 0.08em;
-    color: var(--c-blue-500);
+    color: var(--c-blue-300);
   }
 
   .eco-point h3 {
@@ -81,17 +261,19 @@ const { ecosystem } = Astro.props.content;
   }
 
   .eco-point p {
-    color: var(--c-ink-70);
+    color: var(--c-white-70);
   }
 
   @media (min-width: 768px) {
-    .eco-text {
-      grid-template-columns: repeat(2, 1fr);
-      gap: var(--s-7);
-    }
-
     .eco-points {
       grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .eco {
+      grid-template-columns: 1fr 1fr;
+      gap: var(--s-9);
     }
   }
 </style>

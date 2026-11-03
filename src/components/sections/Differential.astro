@@ -1,6 +1,5 @@
 ---
 import Section from '../ui/Section.astro';
-import Glow from '../ui/Glow.astro';
 import type { Content } from '../../i18n/pt';
 
 interface Props {
@@ -10,8 +9,7 @@ interface Props {
 const { differential } = Astro.props.content;
 ---
 
-<Section id="diferencial" tone="night" labelledby="diferencial-title">
-  <Glow slot="background" position="bottom-left" size="md" />
+<Section id="diferencial" tone="light" labelledby="diferencial-title">
 
   <div class="diff-head" data-reveal>
     <p class="eyebrow">{differential.eyebrow}</p>
@@ -46,12 +44,12 @@ const { differential } = Astro.props.content;
   }
 
   .diff-head :global(.section-title .serif) {
-    color: var(--c-blue-300);
+    color: var(--c-blue-500);
   }
 
   .diff-text {
     margin-top: var(--s-3);
-    color: var(--c-white-70);
+    color: var(--c-ink-70);
     max-width: 52ch;
   }
 
@@ -67,7 +65,7 @@ const { differential } = Astro.props.content;
     display: grid;
     gap: var(--s-3);
     padding-top: var(--s-5);
-    border-top: 1px solid var(--c-line);
+    border-top: 1px solid var(--c-line-light);
   }
 
   .diff-pillar h3 {
@@ -76,7 +74,7 @@ const { differential } = Astro.props.content;
   }
 
   .diff-pillar p {
-    color: var(--c-white-70);
+    color: var(--c-ink-70);
   }
 
   .diff-closing {
@@ -85,6 +83,7 @@ const { differential } = Astro.props.content;
     font-size: var(--fs-serif);
     line-height: 1.1;
     text-align: right;
+    color: var(--c-blue-500);
   }
 
   @media (min-width: 768px) {
